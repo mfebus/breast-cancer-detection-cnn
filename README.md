@@ -26,6 +26,26 @@ The model is designed with a focus on **maximizing recall (sensitivity)** to min
 - Images may contain noise, variability in staining, and structural differences typical of real-world medical data  
 
 ---
+📚 Data Source and Acknowledgements
+
+This project uses the Breast Histopathology Images dataset available on Kaggle.
+
+Dataset: Breast Histopathology Images
+Source: Kaggle
+Contributor: Paul Mooney
+Original Data Source
+
+The original dataset files are available from:
+http://gleason.case.edu/webdata/jpi-dl-tutorial/IDC_regular_ps50_idx5.zip
+
+Citation
+
+The dataset is associated with the following publications:
+
+https://www.ncbi.nlm.nih.gov/pubmed/27563488
+http://spie.org/Publications/Proceedings/Paper/10.1117/12.2043872
+
+This data is used for educational and research purposes only. Proper credit is given to the original authors and contributors.
 
 ## 🛠️ Tools & Technologies
 - Python  
