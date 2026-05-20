@@ -23,6 +23,13 @@ Develop a CNN model to classify breast tissue images as:
 
 \---
 
+## 📷 Sample Histopathology Images
+Sample patches from the IDC dataset showing malignant and benign tissue classifications.
+
+![Sample Images](breast-cancer-detection.png)
+
+\---
+
 ## 📊 Dataset
 
 |Attribute|Detail|
