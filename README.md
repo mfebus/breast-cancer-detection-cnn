@@ -158,8 +158,6 @@ jupyter notebook notebooks/
 Master of Applied Data Science — University of Michigan (2026)
 Transitioning from Pharma R\&D Project Management to Clinical Data Science
 
-[GitHub](https://github.com/mfebus) | [LinkedIn](#)
-
 \---
 
 *This project is part of a portfolio targeting clinical AI applications in oncology and pharma.*
