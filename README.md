@@ -113,8 +113,8 @@ Input (224×224×3)
 ```
               Predicted
               Benign  Malignant
-Actual Benign  [3276    1401]
-       Malignant [403    3637]
+Actual Benign  [3279    1398]
+       Malignant [405    3635]
 ```
 
 **Diagnosis:** malignant recall improved from **0.15 → 0.90** — the model now catches 90% of actual
@@ -136,25 +136,42 @@ compounding changes below, not any single one of them in isolation.
 2. **Patient-level splitting** — no leaked information inflating the test score (see Dataset section above)
 3. **Class weighting** — the loss function penalizes missed malignant cases roughly 2.6x more
 4. **Transfer learning** — EfficientNetB0's pretrained features, fine-tuned on this task
-5. **Threshold tuning** — the operating point (0.448) was chosen deliberately, not left at the default 0.5
+5. **Threshold tuning** — the operating point (0.449) was chosen deliberately, not left at the default 0.5
 
 **Reading the confusion matrix honestly:**
 ```
               Predicted
               Benign  Malignant
-Actual Benign  [3276    1401]
-       Malignant [403    3637]
+Actual Benign  [3279    1398]
+       Malignant [405    3635]
 ```
-- 403 malignant cases still missed (10%) — down from ~85% missed in the baseline.
-- 1,401 benign cases flagged as malignant — the direct cost of the recall-first threshold choice.
+- 405 malignant cases still missed (10%) — down from ~85% missed in the baseline.
+- 1,398 benign cases flagged as malignant — the direct cost of the recall-first threshold choice.
   In a real clinical workflow, this is the volume of cases that would need a second (human) review,
   not a false diagnosis outright.
 
-**Why threshold 0.448, not 0.5 or the precision/recall crossover point (~0.6):** the threshold was
+**Why threshold 0.449, not 0.5 or the precision/recall crossover point (~0.6):** the threshold was
 chosen as the *lowest* value that still guarantees recall ≥ 0.90, deliberately trading precision
 (0.722) for recall — a direct reflection of the clinical priority that a missed cancer case is far
 more costly than a false alarm.
 
+**Framed for an interview:** this isn't "the model got 79% accuracy." It's "the model was tuned to
+minimize missed malignant cases, at a known and deliberately chosen cost in false positives, using a
+patient-level split so the result generalizes to genuinely unseen patients."
+
+
+
+* [x] Address class imbalance via class weighting
+* [x] Implement transfer learning (EfficientNetB0) for stronger feature extraction
+* [x] Add data augmentation (rotation, flipping, zoom) to improve generalization
+* [x] Tune decision threshold to optimize recall for malignant class
+* [x] Evaluate with AUC-ROC as primary metric
+* [x] Patient-level train/val/test split to prevent data leakage
+* [x] Data acquisition via Kaggle API (no manual download step)
+* [x] Populate v2 results table above with actual run output
+* [ ] Consider ensembling EfficientNetB0 with a second backbone (e.g. ResNet50) if further recall gains are needed
+
+---
 
 ## 🛠️ Tech Stack
 
