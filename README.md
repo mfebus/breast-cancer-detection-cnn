@@ -108,13 +108,10 @@ Input (224×224×3)
 |F1-Score|0.78|0.80|
 |**Accuracy**|| **0.79**|
 
-**Confusion Matrix (at tuned threshold):**
 
-```
-              Predicted
-              Benign  Malignant
-Actual Benign  [3279    1398]
-       Malignant [405    3635]
+
+![**Confusion Matrix (at tuned threshold):**](cm.png)
+
 ```
 
 **Diagnosis:** malignant recall improved from **0.15 → 0.90** — the model now catches 90% of actual
@@ -138,12 +135,6 @@ compounding changes below, not any single one of them in isolation.
 4. **Transfer learning** — EfficientNetB0's pretrained features, fine-tuned on this task
 5. **Threshold tuning** — the operating point (0.449) was chosen deliberately, not left at the default 0.5
 
-**Reading the confusion matrix honestly:**
-```
-              Predicted
-              Benign  Malignant
-Actual Benign  [3279    1398]
-       Malignant [405    3635]
 ```
 - 405 malignant cases still missed (10%) — down from ~85% missed in the baseline.
 - 1,398 benign cases flagged as malignant — the direct cost of the recall-first threshold choice.
@@ -155,6 +146,7 @@ chosen as the *lowest* value that still guarantees recall ≥ 0.90, deliberately
 (0.722) for recall — a direct reflection of the clinical priority that a missed cancer case is far
 more costly than a false alarm.
 
+![**Precision Vs Recall and Threshold (at tuned threshold):**](precision-recall-threshold.png)
 ---
 
 ## 🛠️ Tech Stack
@@ -175,7 +167,7 @@ more costly than a false alarm.
 
 ```
 breast-cancer-detection-cnn/
-├── notebooks/          # Jupyter notebooks (EDA, training, evaluation)
+├── notebook/          # Jupyter notebooks (EDA, training, evaluation)
 │   └── breast_cancer_cnn_v2.ipynb
 ├── src/                # Python scripts
 │   └── app.py
