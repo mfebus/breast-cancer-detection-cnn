@@ -155,23 +155,6 @@ chosen as the *lowest* value that still guarantees recall ≥ 0.90, deliberately
 (0.722) for recall — a direct reflection of the clinical priority that a missed cancer case is far
 more costly than a false alarm.
 
-**Framed for an interview:** this isn't "the model got 79% accuracy." It's "the model was tuned to
-minimize missed malignant cases, at a known and deliberately chosen cost in false positives, using a
-patient-level split so the result generalizes to genuinely unseen patients."
-
-
-
-* [x] Address class imbalance via class weighting
-* [x] Implement transfer learning (EfficientNetB0) for stronger feature extraction
-* [x] Add data augmentation (rotation, flipping, zoom) to improve generalization
-* [x] Tune decision threshold to optimize recall for malignant class
-* [x] Evaluate with AUC-ROC as primary metric
-* [x] Patient-level train/val/test split to prevent data leakage
-* [x] Data acquisition via Kaggle API (no manual download step)
-* [x] Populate v2 results table above with actual run output
-* [ ] Consider ensembling EfficientNetB0 with a second backbone (e.g. ResNet50) if further recall gains are needed
-
----
 
 ## 🛠️ Tech Stack
 
