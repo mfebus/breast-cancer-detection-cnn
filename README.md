@@ -121,7 +121,7 @@ alarm in this clinical context.
 ---
 
 ## 🔍 Observations & Analysis
-```
+
 **The headline result:** malignant recall improved from **0.15 → 0.90** — the model went from missing
 roughly 85% of actual malignant cases to catching 90% of them. This is the direct payoff of the
 compounding changes below, not any single one of them in isolation.
@@ -144,7 +144,6 @@ chosen as the *lowest* value that still guarantees recall ≥ 0.90, deliberately
 more costly than a false alarm.
 
 ![**Precision Vs Recall and Threshold (at tuned threshold):**](precision-recall-threshold.png)
-```
 ---
 
 ## 🛠️ Tech Stack
