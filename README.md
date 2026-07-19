@@ -109,10 +109,8 @@ Input (224×224×3)
 |**Accuracy**|| **0.79**|
 
 
-
 ![**Confusion Matrix (at tuned threshold):**](cm.png)
 
-```
 
 **Diagnosis:** malignant recall improved from **0.15 → 0.90** — the model now catches 90% of actual
 malignant cases, versus missing 85% of them in the v1 baseline. The tradeoff is a drop in malignant
@@ -123,7 +121,7 @@ alarm in this clinical context.
 ---
 
 ## 🔍 Observations & Analysis
-
+```
 **The headline result:** malignant recall improved from **0.15 → 0.90** — the model went from missing
 roughly 85% of actual malignant cases to catching 90% of them. This is the direct payoff of the
 compounding changes below, not any single one of them in isolation.
@@ -135,7 +133,6 @@ compounding changes below, not any single one of them in isolation.
 4. **Transfer learning** — EfficientNetB0's pretrained features, fine-tuned on this task
 5. **Threshold tuning** — the operating point (0.449) was chosen deliberately, not left at the default 0.5
 
-```
 - 405 malignant cases still missed (10%) — down from ~85% missed in the baseline.
 - 1,398 benign cases flagged as malignant — the direct cost of the recall-first threshold choice.
   In a real clinical workflow, this is the volume of cases that would need a second (human) review,
@@ -147,6 +144,7 @@ chosen as the *lowest* value that still guarantees recall ≥ 0.90, deliberately
 more costly than a false alarm.
 
 ![**Precision Vs Recall and Threshold (at tuned threshold):**](precision-recall-threshold.png)
+```
 ---
 
 ## 🛠️ Tech Stack
