@@ -1,0 +1,24 @@
+# Trained model files -- generally excluded, EXCEPT this project's specific
+# model is small enough (40.7 MB) to commit directly, which simplifies
+# Streamlit Community Cloud deployment (no external hosting needed).
+# streamlit_app/model/ is intentionally NOT excluded below.
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+venv/
+.venv/
+env/
+
+# Streamlit secrets (if you ever add a secrets.toml locally -- never commit real credentials)
+streamlit_app/.streamlit/secrets.toml
+
+# OS/editor cruft
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Kaggle credentials -- never commit these
+kaggle.json
