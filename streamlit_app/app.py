@@ -30,8 +30,11 @@ st.set_page_config(
     layout="wide",
 )
 
-MODEL_PATH = Path("model/breast_cancer_efficientnet_final.keras")
-THRESHOLD_PATH = Path("model/threshold.json")
+BASE_DIR = Path(__file__).resolve().parent
+
+MODEL_PATH = BASE_DIR / "model" / "breast_cancer_efficientnet_final.keras"
+THRESHOLD_PATH = BASE_DIR / "model" / "threshold.json"
+LOGO_PATH = BASE_DIR / "assets" / "histotriage_logo.png"
 IMG_SIZE = 224  # must match the size the model was trained on
 
 # --------------------------------------------------------------------------
@@ -45,17 +48,18 @@ st.markdown(
     @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
     :root {
-        --navy: #0d1b2a;
-        --navy-2: #17324a;
-        --teal: #2a7f7f;
-        --teal-soft: #dcefee;
-        --rust: #b65438;
-        --rust-soft: #f5e3dc;
-        --cream: #f8f5ee;
+        --navy: #07182d;
+        --navy-2: #12334a;
+        --teal: #2d8b8c;
+        --teal-soft: #dcefed;
+        --rust: #c86443;
+        --rust-soft: #f6e5df;
+        --cream: #f7f3eb;
         --paper: #fffdf8;
         --ink: #172033;
-        --muted: #667085;
-        --line: #e6e1d8;
+        --muted: #657184;
+        --line: #e5ded2;
+        --shadow: 0 12px 32px rgba(16, 35, 55, 0.08);
     }
 
     html, body, [class*="css"], .stApp, .stMarkdown, p, li, span, label {
@@ -64,108 +68,81 @@ st.markdown(
 
     .stApp {
         background:
-            radial-gradient(circle at 8% 0%, rgba(42,127,127,0.08), transparent 28%),
-            radial-gradient(circle at 95% 12%, rgba(182,84,56,0.07), transparent 26%),
+            radial-gradient(circle at 8% 0%, rgba(45,139,140,0.08), transparent 28%),
+            radial-gradient(circle at 96% 12%, rgba(200,100,67,0.07), transparent 25%),
             var(--cream);
         color: var(--ink);
     }
 
     .block-container {
-        max-width: 1240px;
-        padding-top: 1.7rem;
+        max-width: 1550px;
+        padding-top: 1.5rem;
         padding-bottom: 3rem;
     }
 
-    .brand-shell {
-        background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 72%, #1b4151 100%);
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 22px;
-        padding: 30px 34px;
-        margin: 0 0 20px;
-        box-shadow: 0 18px 45px rgba(13,27,42,0.18);
-        position: relative;
-        overflow: hidden;
+    /* Hero container that holds the generated logo and compact supporting copy. */
+    .logo-banner {
+        background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%);
+        border-radius: 18px;
+        padding: 10px;
+        margin-bottom: 8px;
+        box-shadow: 0 16px 38px rgba(7,24,45,0.16);
+        border: 1px solid rgba(255,255,255,0.07);
     }
 
-    .brand-shell:after {
-        content: "";
-        position: absolute;
-        width: 260px;
-        height: 260px;
-        border-radius: 50%;
-        right: -90px;
-        top: -120px;
-        background: rgba(255,255,255,0.055);
+    .hero-summary {
+        background: rgba(255,253,248,0.96);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 15px 18px;
+        margin: 0 0 18px;
+        box-shadow: 0 8px 22px rgba(23,32,51,0.045);
     }
 
-    .brand-kicker {
-        font-family: 'IBM Plex Mono', monospace;
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: #9fd4d2;
-        margin-bottom: 10px;
+    .hero-copy {
+        color: #445064;
+        font-size: 15px;
+        line-height: 1.6;
+        margin: 0 0 10px;
+        max-width: 960px;
     }
 
-    .brand-title {
-        color: white;
-        font-size: clamp(30px, 4vw, 48px);
-        line-height: 1.05;
-        font-weight: 700;
-        letter-spacing: -0.035em;
-        margin: 0 0 14px;
-    }
-
-    .brand-title span {
-        color: #a7d8d6;
-    }
-
-    .brand-copy {
-        max-width: 820px;
-        color: #d9e4ed;
-        font-size: 17px;
-        line-height: 1.65;
-        margin: 0;
-    }
-
-    .brand-meta {
-        margin-top: 18px;
+    .hero-meta {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
+        gap: 7px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: var(--teal-soft);
+        border: 1px solid #a9cfcc;
+        color: #246d6e;
         font-family: 'IBM Plex Mono', monospace;
-        font-size: 11px;
+        font-size: 9.5px;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: #c5d5df;
-        border: 1px solid rgba(255,255,255,0.15);
-        background: rgba(255,255,255,0.06);
-        padding: 7px 10px;
-        border-radius: 999px;
     }
 
     .notice-card {
         display: flex;
-        gap: 14px;
+        gap: 13px;
         align-items: flex-start;
-        background: rgba(255,253,248,0.94);
+        background: rgba(255,253,248,0.96);
         border: 1px solid #eadbd4;
         border-left: 5px solid var(--rust);
         border-radius: 14px;
-        padding: 17px 19px;
-        margin-bottom: 22px;
+        padding: 16px 18px;
+        margin-bottom: 20px;
         box-shadow: 0 8px 24px rgba(23,32,51,0.05);
     }
 
     .notice-icon {
-        min-width: 36px;
-        height: 36px;
+        min-width: 34px;
+        height: 34px;
         display: grid;
         place-items: center;
         border-radius: 10px;
         background: var(--rust-soft);
-        font-size: 18px;
+        font-size: 17px;
     }
 
     .notice-title {
@@ -175,31 +152,32 @@ st.markdown(
     }
 
     .notice-copy {
-        color: #5f4e48;
-        font-size: 14px;
+        color: #604f49;
+        font-size: 13.5px;
         line-height: 1.55;
         margin: 0;
     }
 
     .stat-card {
-        background: rgba(255,253,248,0.95);
+        background: rgba(255,253,248,0.96);
         border: 1px solid var(--line);
         border-radius: 16px;
-        padding: 18px 18px 16px;
-        min-height: 116px;
-        box-shadow: 0 8px 26px rgba(23,32,51,0.055);
+        padding: 17px 17px 15px;
+        min-height: 112px;
+        box-shadow: 0 8px 25px rgba(23,32,51,0.055);
         transition: transform 0.18s ease, box-shadow 0.18s ease;
     }
 
     .stat-card:hover {
         transform: translateY(-2px);
-        box-shadow: 0 12px 32px rgba(23,32,51,0.08);
+        box-shadow: var(--shadow);
     }
 
     .stat-label {
         font-family: 'IBM Plex Mono', monospace;
-        font-size: 10.5px;
-        letter-spacing: 0.1em;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.10em;
         text-transform: uppercase;
         color: var(--muted);
         display: block;
@@ -207,7 +185,7 @@ st.markdown(
     }
 
     .stat-value {
-        font-size: 31px;
+        font-size: 30px;
         line-height: 1;
         font-weight: 700;
         color: var(--navy);
@@ -217,64 +195,60 @@ st.markdown(
     .stat-accent {
         width: 34px;
         height: 3px;
-        border-radius: 99px;
+        border-radius: 999px;
         background: linear-gradient(90deg, var(--teal), var(--rust));
         margin-top: 13px;
     }
 
     h1, h2, h3 {
         color: var(--navy) !important;
-        letter-spacing: -0.02em;
+        letter-spacing: -0.025em;
     }
 
-    h2 {
-        font-size: 25px !important;
-    }
-
-    h3 {
-        font-size: 19px !important;
-    }
+    h2 { font-size: 25px !important; }
+    h3 { font-size: 19px !important; }
 
     .section-intro {
         color: var(--muted);
-        font-size: 16px;
+        font-size: 15.5px;
         line-height: 1.65;
         margin-top: -4px;
         margin-bottom: 12px;
     }
 
     section[data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #f2eee5 0%, #eee8dc 100%);
-        border-right: 1px solid #e1dacd;
+        background: linear-gradient(180deg, #f2eee5 0%, #ece6da 100%);
+        border-right: 1px solid #ded6c9;
     }
 
     section[data-testid="stSidebar"] h2 {
+        font-family: 'DM Sans', sans-serif;
         font-size: 16px !important;
         font-weight: 700;
         color: var(--navy);
     }
 
+    section[data-testid="stSidebar"] p,
+    section[data-testid="stSidebar"] li {
+        font-size: 13.5px;
+        line-height: 1.55;
+        color: #3f4958;
+    }
+
     .sidebar-label {
         font-family: 'IBM Plex Mono', monospace;
-        font-size: 10px;
+        font-size: 9.5px;
         font-weight: 600;
         letter-spacing: 0.11em;
         text-transform: uppercase;
         color: var(--teal);
         display: block;
-        margin-top: 18px;
+        margin-top: 17px;
         margin-bottom: 5px;
     }
 
-    section[data-testid="stSidebar"] p,
-    section[data-testid="stSidebar"] li {
-        font-size: 14px;
-        line-height: 1.55;
-        color: #3f4755;
-    }
-
     div[data-testid="stFileUploader"] {
-        background: rgba(255,253,248,0.95);
+        background: rgba(255,253,248,0.96);
         border: 1px solid var(--line);
         border-radius: 16px;
         padding: 10px;
@@ -282,7 +256,7 @@ st.markdown(
     }
 
     div[data-testid="stFileUploader"] section {
-        border: 1.5px dashed #9bbfbd;
+        border: 1.5px dashed #8eb9b7;
         border-radius: 12px;
         background: #f7fbfa;
     }
@@ -300,7 +274,7 @@ st.markdown(
 
     div[data-testid="stImage"] img {
         border-radius: 14px;
-        border: 1px solid #e6e1d8;
+        border: 1px solid #e5ddd1;
         box-shadow: 0 10px 24px rgba(23,32,51,0.08);
     }
 
@@ -316,7 +290,7 @@ st.markdown(
     }
 
     .queue-card {
-        background: rgba(255,253,248,0.95);
+        background: rgba(255,253,248,0.96);
         border: 1px solid var(--line);
         border-radius: 16px;
         padding: 20px 22px;
@@ -354,19 +328,40 @@ st.markdown(
         max-width: 880px;
     }
 
+    .filter-preview-note {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 9.5px;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: var(--teal);
+        background: var(--teal-soft);
+        border: 1px solid #a9cfcc;
+        border-radius: 999px;
+        padding: 4px 9px;
+        display: inline-block;
+        margin: 14px 0 10px;
+    }
+
+    div[data-baseweb="select"] > div,
+    div[data-testid="stTextInput"] input {
+        border-radius: 10px !important;
+        border-color: #d7d0c4 !important;
+        background: rgba(255,253,248,0.96) !important;
+    }
+
     @media (max-width: 720px) {
         .block-container {
             padding-left: 1rem;
             padding-right: 1rem;
         }
 
-        .brand-shell {
-            padding: 25px 22px;
-            border-radius: 18px;
+        .logo-banner {
+            border-radius: 14px;
+            padding: 7px;
         }
 
-        .brand-copy {
-            font-size: 15px;
+        .hero-copy {
+            font-size: 14px;
         }
     }
     </style>
@@ -473,23 +468,24 @@ with st.sidebar:
 
 
 # --------------------------------------------------------------------------
-# Header -- styled to match the companion dashboard artifact
+# Header -- generated HistoTriage logo plus supporting product statement
 # --------------------------------------------------------------------------
-st.markdown(
-    """
-    <div class="brand-shell">
-        <div class="brand-kicker">Clinical AI Portfolio Prototype</div>
-        <div class="brand-title">Histo<span>Triage</span></div>
-        <p class="brand-copy">
-            A recall-optimized convolutional neural network that classifies breast
-            histopathology patches as benign or malignant, designed to illustrate how
-            AI-assisted triage could support faster and more consistent specimen review.
-        </p>
-        <div class="brand-meta">🔬 Live model inference · EfficientNetB0</div>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+if LOGO_PATH.exists():
+    st.markdown('<div class="logo-banner">', unsafe_allow_html=True)
+
+    st.image(str(LOGO_PATH), width=2000
+    )
+
+    st.markdown("</div>", unsafe_allow_html=True)
+else:
+    st.markdown(
+        """
+        <div class="logo-banner" style="color:white; font-size:36px; font-weight:700;">
+            Histo<span style="color:#66bec0;">Triage</span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 st.markdown(
     """
@@ -498,11 +494,8 @@ st.markdown(
         <div>
             <div class="notice-title">Educational / Portfolio Demonstration Project</div>
             <p class="notice-copy">
-                This prototype demonstrates an end-to-end machine learning workflow,
-                including data preparation, transfer learning, class-imbalance handling,
-                threshold tuning, and live inference. It is not a medical device, has not
-                been clinically validated, and must not be used for diagnosis or clinical
-                decision-making.
+                Upload breast histopathology patches and explore AI-assisted breast cancer triage using a recall-optimized EfficientNetB0 model. This interactive prototype showcases an end-to-end machine learning workflow, including transfer learning, class-imbalance handling, threshold optimization, and live model inference.
+                This application is intended for educational and portfolio demonstration purposes only. It has not been clinically validated and must not be used for diagnosis or clinical decision-making.
             </p>
         </div>
     </div>
@@ -624,7 +617,7 @@ st.markdown(
         <p class="queue-copy">
             A future version could retain uploaded cases, sort them by confidence,
             and help a pathologist prioritize the patches most likely to require
-            immediate review. The preview below uses illustrative sample names only.
+            immediate review. The interactive preview below uses illustrative data only.
         </p>
     </div>
     """,
@@ -632,11 +625,55 @@ st.markdown(
 )
 
 _sample_queue = [
-    {"Patient": "Jane Doe", "Confidence": "0.94", "Class": "Malignant", "Status": "Pending"},
-    {"Patient": "John Smith", "Confidence": "0.88", "Class": "Malignant", "Status": "Pending"},
-    {"Patient": "Maria Garcia", "Confidence": "0.81", "Class": "Malignant", "Status": "In Review"},
-    {"Patient": "Robert Chen", "Confidence": "0.73", "Class": "Malignant", "Status": "Pending"},
-    {"Patient": "Emily Johnson", "Confidence": "0.61", "Class": "Malignant", "Status": "Pending"},
+    {"Patient": "Jane Doe", "Confidence": 0.94, "Class": "Malignant", "Status": "Pending"},
+    {"Patient": "John Smith", "Confidence": 0.88, "Class": "Malignant", "Status": "Pending"},
+    {"Patient": "Maria Garcia", "Confidence": 0.81, "Class": "Malignant", "Status": "In Review"},
+    {"Patient": "Robert Chen", "Confidence": 0.73, "Class": "Malignant", "Status": "Pending"},
+    {"Patient": "Emily Johnson", "Confidence": 0.61, "Class": "Malignant", "Status": "Pending"},
+    {"Patient": "Ava Patel", "Confidence": 0.42, "Class": "Benign", "Status": "Reviewed"},
+    {"Patient": "Daniel Kim", "Confidence": 0.27, "Class": "Benign", "Status": "Reviewed"},
 ]
-st.dataframe(_sample_queue, use_container_width=True, hide_index=True)
-st.caption("Sample names shown for illustration only — no real patient data is connected.")
+
+st.markdown(
+    '<span class="filter-preview-note">Interactive Preview · Future Feature</span>',
+    unsafe_allow_html=True,
+)
+
+filter_cols = st.columns([1.1, 1.1, 1.35, 1.55])
+
+with filter_cols[0]:
+    class_filter = st.selectbox(
+        "Predicted class", ["All", "Malignant", "Benign"], key="queue_class_filter"
+    )
+
+with filter_cols[1]:
+    status_filter = st.selectbox(
+        "Review status", ["All", "Pending", "In Review", "Reviewed"], key="queue_status_filter"
+    )
+
+with filter_cols[2]:
+    min_confidence = st.slider(
+        "Minimum confidence", min_value=0.0, max_value=1.0, value=0.0, step=0.05,
+        key="queue_confidence_filter"
+    )
+
+with filter_cols[3]:
+    patient_search = st.text_input(
+        "Search illustrative patient", placeholder="Type a sample name", key="queue_patient_search"
+    )
+
+filtered_queue = [
+    row for row in _sample_queue
+    if (class_filter == "All" or row["Class"] == class_filter)
+    and (status_filter == "All" or row["Status"] == status_filter)
+    and row["Confidence"] >= min_confidence
+    and (not patient_search or patient_search.lower() in row["Patient"].lower())
+]
+
+display_queue = [{**row, "Confidence": f'{row["Confidence"]:.2f}'} for row in filtered_queue]
+
+st.dataframe(display_queue, use_container_width=True, hide_index=True)
+st.caption(
+    "Interactive preview using illustrative sample data only. "
+    "No real patient records are connected, stored, or processed."
+)
