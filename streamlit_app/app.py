@@ -9,7 +9,6 @@ Run locally with:
 Requires the trained model files to be present at:
     model/breast_cancer_efficientnet_final.keras
     model/threshold.json
-(copy these out of your Drive's breast_cancer_project/models/ folder)
 """
 
 import json
