@@ -38,7 +38,7 @@ Sample patches from the IDC dataset showing malignant and benign tissue classifi
 |Access method|Kaggle API (`kagglehub`) — fetched directly into the training environment, no manual download|
 |Image type|Histopathology patches (50×50px, IDC dataset)|
 |Classes|Benign (0), Malignant (1)|
-|Input size|Resized to 96×96×3 (EfficientNetB0 native resolution)|
+|Input size|Resized to 224×224×3 (EfficientNetB0 native resolution)|
 |Full dataset size|~198K patches across ~280 patients|
 |Train/val/test split|**Patient-level** stratified split (not image-level) — see note below|
 |Challenge|Class imbalance, staining variability, real-world noise|
@@ -57,7 +57,7 @@ Sample patches from the IDC dataset showing malignant and benign tissue classifi
 **v2 uses transfer learning** (EfficientNetB0, pretrained on ImageNet) in place of the original custom CNN trained from scratch:
 
 ```
-Input (96×96×3)
+Input (224×224×3)
 → Data Augmentation (flip, rotation, zoom)
 → EfficientNet preprocessing (model-specific input scaling)
 → EfficientNetB0 backbone (ImageNet weights)
