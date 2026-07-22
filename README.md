@@ -57,7 +57,7 @@ Sample patches from the IDC dataset showing malignant and benign tissue classifi
 **v2 uses transfer learning** (EfficientNetB0, pretrained on ImageNet) in place of the original custom CNN trained from scratch:
 
 ```
-Input (224×224×3)
+Input (96×96×3)
 → Data Augmentation (flip, rotation, zoom)
 → EfficientNet preprocessing (model-specific input scaling)
 → EfficientNetB0 backbone (ImageNet weights)
